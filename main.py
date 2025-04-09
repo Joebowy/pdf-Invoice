@@ -14,15 +14,14 @@ for filepath in filepaths:
     # set the page for the pdf
     pdf = FPDF(orientation="p", unit="mm", format="A4")
     pdf.add_page()
-    #extracting filename
+    # extracting filename
     filename = Path(filepath).stem
     invoice_nr = filename.split("-")[0]
+    data = filename.split("-")[1]
     # set the font for pdf
-    pdf.set_font(family="Times",size=14, style="B")
+    pdf.set_font(family="Times", size=14, style="B")
     # write in pdf
-    pdf.cell(w=40, h=8, txt=f"Invoice No.{invoice_nr}")
+    pdf.cell(w=40, h=8, txt=f"Invoice No.{invoice_nr}  ")
+
     # printing the pdf output for each
     pdf.output(f"PDFs/{filename}.pdf")
-
-
-
