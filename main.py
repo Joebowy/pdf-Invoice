@@ -10,7 +10,6 @@ filepaths = glob.glob("invoices/*.xlsx")
 
 # Reading the excel file
 for filepath in filepaths:
-    df = pd.read_excel(filepath, sheet_name="Sheet 1")
     # set the page for the pdf
     pdf = FPDF(orientation="p", unit="mm", format="A4")
     pdf.add_page()
@@ -25,7 +24,29 @@ for filepath in filepaths:
 
     # adding data
     pdf.set_font(family="Times", size=16, style="B")
-    pdf.cell(w=50, h=8, txt=f"Data: {data}")
+    pdf.cell(w=50, h=8, txt=f"Data: {data}",ln=2)
+
+    # adding header
+    df = pd.read_excel(filepath, sheet_name="Sheet 1")
+    columns = list(df.columns)
+    column = [item.replace("_"," ").title() for item in columns]
+    pdf.set_font(family="Times",size=14,style="B")
+    pdf.set_text_color(80,80,80)
+    pdf.cell(w=25,h=8,txt=column[0],border=1)
+    pdf.cell(w=55, h=8, txt=column[1], border=1)
+    pdf.cell(w=48, h=8, txt=column[2], border=1)
+    pdf.cell(w=35, h=8, txt=column[3], border=1)
+    pdf.cell(w=25, h=8, txt=column[4], border=1,ln=1)
+
+    #add rows to the table
+    for index,row in df.iterrows():
+        pdf.set_font(family="Times", size=12)
+        pdf.set_text_color(80, 80, 80)
+        pdf.cell(w=25, h=8, txt=str(row["product_id"]), border=1)
+        pdf.cell(w=55, h=8, txt=str(row["product_name"]), border=1)
+        pdf.cell(w=48, h=8, txt=str(row["amount_purchased"]), border=1)
+        pdf.cell(w=35, h=8, txt=str(row["price_per_unit"]), border=1)
+        pdf.cell(w=25, h=8, txt=str(row["total_price"]), border=1, ln=1)
 
     # printing the pdf output for each
     pdf.output(f"PDFs/{filename}.pdf")
