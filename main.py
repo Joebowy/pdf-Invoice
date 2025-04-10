@@ -38,7 +38,7 @@ for filepath in filepaths:
     pdf.cell(w=35, h=8, txt=column[3], border=1)
     pdf.cell(w=25, h=8, txt=column[4], border=1,ln=1)
 
-    #add rows to the table
+    #adding rows to the table
     for index,row in df.iterrows():
         pdf.set_font(family="Times", size=12)
         pdf.set_text_color(80, 80, 80)
@@ -47,6 +47,25 @@ for filepath in filepaths:
         pdf.cell(w=48, h=8, txt=str(row["amount_purchased"]), border=1)
         pdf.cell(w=35, h=8, txt=str(row["price_per_unit"]), border=1)
         pdf.cell(w=25, h=8, txt=str(row["total_price"]), border=1, ln=1)
+
+        # calculating the total price
+        total_sum=df["total_price"].sum()
+    pdf.set_font(family="Times", size=12)
+    pdf.set_text_color(80, 80, 80)
+    pdf.cell(w=25, h=8, txt="", border=1)
+    pdf.cell(w=55, h=8, txt="", border=1)
+    pdf.cell(w=48, h=8, txt="", border=1)
+    pdf.cell(w=35, h=8, txt="", border=1)
+    pdf.cell(w=25, h=8, txt=str(total_sum), border=1, ln=1)
+
+    # adding total sum sentence
+    pdf.set_font(family="Times", size=16)
+    pdf.cell(w=25, h=8, txt=f"The total price of the products is {str(total_sum)} Euro", ln=1)
+
+    # adding company logo
+    pdf.set_font(family="Times", size=16)
+    pdf.cell(w=25, h=8, txt="Joe Company Limited")
+
 
     # printing the pdf output for each
     pdf.output(f"PDFs/{filename}.pdf")
