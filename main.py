@@ -8,12 +8,13 @@ from pathlib import Path
 # having excess to all the data
 filepaths = glob.glob("invoices/*.xlsx")
 
-# Reading the excel file
+
 for filepath in filepaths:
     # set the page for the pdf
     pdf = FPDF(orientation="p", unit="mm", format="A4")
     pdf.add_page()
-    # extracting filename
+
+    # extracting filename (Thus extracting the name of how the file is name )
     filename = Path(filepath).stem
     invoice_nr = filename.split("-")[0]
     data = filename.split("-")[1]
@@ -26,6 +27,7 @@ for filepath in filepaths:
     pdf.set_font(family="Times", size=16, style="B")
     pdf.cell(w=50, h=8, txt=f"Data: {data}",ln=2)
 
+    # Reading the Excel file
     # adding header
     df = pd.read_excel(filepath, sheet_name="Sheet 1")
     columns = list(df.columns)
